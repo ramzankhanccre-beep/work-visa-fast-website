@@ -1,0 +1,7 @@
+{
+  "name": "Work Visa Fast",
+  "description": "Premium global recruitment and visa agency landing page.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
