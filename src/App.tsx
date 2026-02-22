@@ -34,7 +34,7 @@ const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<'text' | 'voice'>('text');
   const [messages, setMessages] = useState<{role: 'user' | 'ai', text: string}[]>([
-    { role: 'ai', text: 'Hello! I am your AI Immigration Consultant. How can I help you today?' }
+    { role: 'ai', text: 'Hello! I am your AI Immigration Consultant. To better assist you with your visa and relocation needs, may I start by asking your full name?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ const Chatbot = () => {
     chatRef.current = ai.chats.create({
       model: "gemini-3-flash-preview",
       config: {
-        systemInstruction: "You are a master of immigration and providing consultancy for Work Visa Fast. You help users with their visa and relocation queries. Be concise, professional, and helpful.",
+        systemInstruction: "You are a master of immigration and providing consultancy for Work Visa Fast. Your goal is to qualify the user and capture them as a lead. Ask them the following questions one by one in a conversational manner: 1. Full Name, 2. Email Address, 3. Current Nationality, 4. Target Country, 5. Years of Experience. You have already greeted them and asked for their full name. Continue the qualification process. Once you have all the information, tell them a specialist will contact them shortly and encourage them to fill out the application form on the website. Be concise, professional, and helpful.",
       },
     });
   }, []);
@@ -101,7 +101,7 @@ const Chatbot = () => {
         model: "gemini-2.5-flash-native-audio-preview-09-2025",
         config: {
           responseModalities: [Modality.AUDIO],
-          systemInstruction: "You are a master of immigration and providing consultancy for Work Visa Fast. You help users with their visa and relocation queries. Be concise and professional.",
+          systemInstruction: "You are a master of immigration and providing consultancy for Work Visa Fast. Your goal is to qualify the user and capture them as a lead. Start by greeting them and asking for their full name. Then ask them the following questions one by one in a conversational manner: 2. Email Address, 3. Current Nationality, 4. Target Country, 5. Years of Experience. Once you have all the information, tell them a specialist will contact them shortly. Be concise, professional, and helpful.",
           speechConfig: {
             voiceConfig: { prebuiltVoiceConfig: { voiceName: "Zephyr" } },
           },
@@ -429,9 +429,14 @@ const Navbar = () => {
           <a href="#global" className="hover:text-amber-400 transition-colors">Global Reach</a>
           <a href="#apply" className="hover:text-amber-400 transition-colors">Apply Now</a>
         </div>
-        <a href="#apply" className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-6 py-2.5 rounded-full font-semibold transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(245,158,11,0.3)] inline-block">
+        <motion.a 
+          href="#apply" 
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-6 py-2.5 rounded-full font-semibold transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] inline-block"
+        >
           Get Started
-        </a>
+        </motion.a>
       </div>
     </motion.nav>
   );
@@ -492,9 +497,14 @@ const Hero = () => {
             transition={{ delay: 1, duration: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <a href="#apply" className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.4)]">
+            <motion.a 
+              href="#apply" 
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.4)]"
+            >
               Start Your Journey <ArrowRight className="w-5 h-5" />
-            </a>
+            </motion.a>
             <a href="#services" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg transition-all backdrop-blur-sm flex items-center justify-center">
               Explore Services
             </a>
@@ -531,7 +541,7 @@ const Services = () => {
           <motion.h2 
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: false, margin: "-100px" }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
             className="text-3xl md:text-5xl font-bold text-white mb-4"
           >
@@ -540,7 +550,7 @@ const Services = () => {
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: false, margin: "-100px" }}
             transition={{ delay: 0.2 }}
             className="text-slate-400 max-w-2xl mx-auto text-lg"
           >
@@ -554,7 +564,7 @@ const Services = () => {
               key={index}
               initial={{ opacity: 0, y: 50, rotateX: -30 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ delay: index * 0.2, type: "spring", stiffness: 100 }}
               whileHover={{ y: -10, scale: 1.02 }}
               className="bg-slate-800/50 border border-slate-700 p-8 rounded-2xl hover:bg-slate-800 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-amber-500/10"
@@ -582,13 +592,13 @@ const GlobalReach = () => {
           <motion.div
             initial={{ opacity: 0, x: -100 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: false, margin: "-100px" }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
           >
             <motion.h2 
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: 0.2 }}
               className="text-3xl md:text-5xl font-bold text-white mb-6"
             >
@@ -598,7 +608,7 @@ const GlobalReach = () => {
             <motion.p 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: 0.4 }}
               className="text-slate-400 text-lg mb-8 leading-relaxed"
             >
@@ -615,7 +625,7 @@ const GlobalReach = () => {
                   key={i}
                   initial={{ opacity: 0, scale: 0.5 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: false }}
                   transition={{ delay: 0.5 + (i * 0.1), type: "spring" }}
                 >
                   <div className="text-4xl font-bold text-white mb-2">{stat.value}</div>
@@ -628,7 +638,7 @@ const GlobalReach = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
             whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: false, margin: "-100px" }}
             transition={{ type: "spring", stiffness: 50, damping: 20, delay: 0.2 }}
             className="relative"
           >
@@ -698,7 +708,7 @@ const ApplicationForm = () => {
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className="bg-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-700"
         >
           
@@ -915,7 +925,7 @@ const Footer = () => {
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="col-span-1 md:col-span-2"
           >
             <div className="flex items-center gap-2 mb-6">
@@ -945,7 +955,7 @@ const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ delay: 0.1 }}
           >
             <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
@@ -960,7 +970,7 @@ const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ delay: 0.2 }}
           >
             <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact Us</h4>
@@ -984,7 +994,7 @@ const Footer = () => {
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className="pt-8 border-t border-slate-800 text-center text-slate-500 text-sm"
         >
           <p>&copy; {new Date().getFullYear()} Work Visa Fast. All rights reserved.</p>
