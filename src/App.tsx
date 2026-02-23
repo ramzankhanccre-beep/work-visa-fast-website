@@ -17,8 +17,7 @@ import {
   ChevronRight,
   ChevronLeft,
   X,
-  MessageCircle,
-  Phone
+  MessageCircle
 } from 'lucide-react';
 
 const DisclaimerPopup = () => {
