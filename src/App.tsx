@@ -695,7 +695,7 @@ const Footer = () => {
           viewport={{ once: false }}
           className="pt-8 border-t border-slate-800 text-center text-slate-500 text-sm"
         >
-          <p>&copy; {new Date().getFullYear()} Work Visa Fast. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Work Visa Fast. All rights reserved. | Website by <span className="text-amber-500 font-medium">Ramzan Khan</span></p>
         </motion.div>
       </div>
     </footer>
