@@ -28,7 +28,18 @@ import {
 } from 'lucide-react';
 import { GoogleGenAI, Modality, LiveServerMessage } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
+let ai: GoogleGenAI | null = null;
+
+if (apiKey && apiKey !== 'undefined' && apiKey !== 'null') {
+  try {
+    ai = new GoogleGenAI({ apiKey });
+  } catch (e) {
+    console.error("Failed to initialize Gemini API:", e);
+  }
+} else {
+  console.warn("Gemini API Key is missing. Chatbot features will be disabled.");
+}
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,12 +60,17 @@ const Chatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    chatRef.current = ai.chats.create({
-      model: "gemini-3-flash-preview",
-      config: {
-        systemInstruction: "You are a master of immigration and providing consultancy for Work Visa Fast. Your goal is to qualify the user and capture them as a lead. Ask them the following questions one by one in a conversational manner: 1. Full Name, 2. Email Address, 3. Current Nationality, 4. Target Country, 5. Years of Experience. You have already greeted them and asked for their full name. Continue the qualification process. Once you have all the information, tell them a specialist will contact them shortly and encourage them to fill out the application form on the website. Be concise, professional, and helpful.",
-      },
-    });
+    if (!ai) return;
+    try {
+      chatRef.current = ai.chats.create({
+        model: "gemini-3-flash-preview",
+        config: {
+          systemInstruction: "You are a master of immigration and providing consultancy for Work Visa Fast. Your goal is to qualify the user and capture them as a lead. Ask them the following questions one by one in a conversational manner: 1. Full Name, 2. Email Address, 3. Current Nationality, 4. Target Country, 5. Years of Experience. You have already greeted them and asked for their full name. Continue the qualification process. Once you have all the information, tell them a specialist will contact them shortly and encourage them to fill out the application form on the website. Be concise, professional, and helpful.",
+        },
+      });
+    } catch (e) {
+      console.error("Failed to create chat", e);
+    }
   }, []);
 
   useEffect(() => {
@@ -62,7 +78,14 @@ const Chatbot = () => {
   }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim() || !chatRef.current) return;
+    if (!input.trim()) return;
+    
+    if (!ai || !chatRef.current) {
+      setMessages(prev => [...prev, { role: 'user', text: input }, { role: 'ai', text: 'Sorry, the AI is currently unavailable because the API key is missing. Please contact support.' }]);
+      setInput('');
+      return;
+    }
+
     const userMessage = input;
     setInput('');
     setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
@@ -80,6 +103,10 @@ const Chatbot = () => {
   };
 
   const startCall = async () => {
+    if (!ai) {
+      alert("Voice call is unavailable because the API key is missing.");
+      return;
+    }
     setIsCalling(true);
     try {
       const ctx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
